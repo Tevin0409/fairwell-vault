@@ -11,9 +11,9 @@ export default function Countdown() {
   })
 
   useEffect(() => {
-    // Set target date to 14 days from now
+    // Set target date to 5 days from now
     const targetDate = new Date()
-    targetDate.setDate(targetDate.getDate() + 14)
+    targetDate.setDate(targetDate.getDate() + 5)
 
     const interval = setInterval(() => {
       const now = new Date()
@@ -35,16 +35,16 @@ export default function Countdown() {
   }, [])
 
   return (
-    <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
+    <div className="grid grid-cols-4 gap-2 sm:gap-4 max-w-2xl mx-auto">
       {[
         { label: 'Days', value: timeLeft.days },
         { label: 'Hours', value: timeLeft.hours },
         { label: 'Minutes', value: timeLeft.minutes },
         { label: 'Seconds', value: timeLeft.seconds },
       ].map((item) => (
-        <div key={item.label} className="bg-gray-100 rounded-lg p-4 text-center">
-          <div className="text-3xl font-bold text-gray-900">{item.value}</div>
-          <div className="text-xs text-gray-500 uppercase mt-1">{item.label}</div>
+        <div key={item.label} className="bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl p-3 sm:p-4 text-center">
+          <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-dune">{item.value}</div>
+          <div className="text-[10px] sm:text-xs text-dune/60 uppercase mt-1 font-medium">{item.label}</div>
         </div>
       ))}
     </div>

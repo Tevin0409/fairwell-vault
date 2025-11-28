@@ -7,19 +7,20 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-concrete text-dune font-sans selection:bg-light-coral selection:text-white">
       {/* Header */}
-      <nav className="flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
+      <nav className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-6 max-w-7xl mx-auto">
         <div className="flex items-center gap-2 group">
           <div className="relative">
-            <Heart className="text-light-coral w-6 h-6 group-hover:animate-sparkle" fill="currentColor" />
+            <Heart className="text-light-coral w-5 h-5 sm:w-6 sm:h-6 group-hover:animate-sparkle" fill="currentColor" />
             <div className="absolute inset-0 bg-light-coral blur-lg opacity-20 group-hover:opacity-40 transition-opacity" />
           </div>
-          <span className="font-bold text-xl tracking-tight">Farewell Vault</span>
+          <span className="font-bold text-lg sm:text-xl tracking-tight">Farewell Vault</span>
         </div>
         <Link
           href="/submit"
-          className="bg-light-coral hover:bg-rose-500 text-white font-semibold px-6 py-2.5 rounded-full transition-all shadow-lg shadow-light-coral/20 hover:shadow-light-coral/40 hover:-translate-y-0.5"
+          className="bg-light-coral hover:bg-rose-500 text-white font-semibold px-4 py-2 sm:px-6 sm:py-2.5 rounded-full transition-all shadow-lg shadow-light-coral/20 hover:shadow-light-coral/40 hover:-translate-y-0.5 text-sm sm:text-base"
         >
-          Submit Your Message
+          <span className="hidden sm:inline">Submit Your Message</span>
+          <span className="sm:hidden">Submit</span>
         </Link>
       </nav>
 
