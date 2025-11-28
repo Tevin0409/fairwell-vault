@@ -170,7 +170,7 @@ export default function AdminDashboard() {
           <div className="flex items-center gap-4">
             <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
               <div className="w-8 h-8 rounded-full bg-orange-100 border-2 border-white shadow-sm overflow-hidden">
-                 <Image src="/hero-bg.png" alt="Admin" width={32} height={32} className="object-cover" />
+                 <Image src="/gallery-1.jpg" alt="Admin" width={32} height={32} className="object-cover" />
               </div>
             </button>
             <button 

@@ -43,7 +43,7 @@ export default function AdminLogin() {
       <div className="hidden lg:flex lg:w-1/2 relative bg-dune text-white">
         <div className="absolute inset-0">
           <Image 
-            src="/hero-bg.png" 
+            src="/gallery-1.jpg" 
             alt="City" 
             fill 
             className="object-cover opacity-40 mix-blend-overlay"

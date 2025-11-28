@@ -55,9 +55,9 @@ export default function AdminRegister() {
       {/* Left Side - Image & Quote */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-light-coral text-white">
         <div className="absolute inset-0">
-           {/* Using hero-bg.png as background */}
+           {/* Using gallery-1.jpg as background */}
           <Image 
-            src="/hero-bg.png" 
+            src="/gallery-2.jpg" 
             alt="Friends" 
             fill 
             className="object-cover opacity-40 mix-blend-multiply"
@@ -69,7 +69,7 @@ export default function AdminRegister() {
           <blockquote className="font-serif text-5xl font-medium leading-tight mb-8">
             "Saying goodbye doesn't mean anything. It's the time we spent together that matters."
           </blockquote>
-          <cite className="text-xl opacity-80 not-italic font-light tracking-wide">- Trey Parker</cite>
+
         </div>
       </div>
 
