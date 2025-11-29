@@ -6,6 +6,7 @@ create table messages (
   id uuid default uuid_generate_v4() primary key,
   name text not null, -- Enforce Name Required
   message text not null,
+  type text default 'personal', -- 'personal' or 'stanley'
   is_favorite boolean default false,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );

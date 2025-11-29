@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Heart, Video, FileText, LogOut, Search, SlidersHorizontal, ArrowUpDown, Play } from 'lucide-react'
+import { Heart, Video, FileText, LogOut, Search, SlidersHorizontal, ArrowUpDown, Play, MessageCircle } from 'lucide-react'
 import Image from 'next/image'
 import clsx from 'clsx'
 import { supabase } from '@/lib/supabase'
@@ -13,6 +13,7 @@ interface Message {
   id: string
   name: string
   message: string
+  type?: 'personal' | 'stanley'
   createdAt: string
   isFavorite: boolean
 }
@@ -30,13 +31,13 @@ export default function AdminDashboard() {
   const [messages, setMessages] = useState<Message[]>([])
   const [videos, setVideos] = useState<VideoSubmission[]>([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState<'all' | 'text' | 'video' | 'favorites'>('all')
+  const [filter, setFilter] = useState<'all' | 'text' | 'video' | 'stanley' | 'favorites'>('all')
   
   // Modal State
   const [selectedItem, setSelectedItem] = useState<{
     id: string
     name: string
-    type: 'text' | 'video'
+    type: 'text' | 'video' | 'stanley'
     content: string
     createdAt: string
     isFavorite: boolean
@@ -77,13 +78,13 @@ export default function AdminDashboard() {
     }
   }
 
-  const toggleFavorite = async (id: string, type: 'text' | 'video', currentStatus: boolean) => {
+  const toggleFavorite = async (id: string, type: 'text' | 'video' | 'stanley', currentStatus: boolean) => {
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) return
 
-      // Map 'text' type back to 'messages' endpoint
-      const endpoint = type === 'text' ? `/api/messages/${id}` : `/api/videos/${id}`
+      // Map 'text' and 'stanley' type back to 'messages' endpoint
+      const endpoint = (type === 'text' || type === 'stanley') ? `/api/messages/${id}` : `/api/videos/${id}`
       const res = await fetch(endpoint, {
         method: 'PATCH',
         headers: { 
@@ -94,7 +95,7 @@ export default function AdminDashboard() {
       })
 
       if (res.ok) {
-        if (type === 'text') {
+        if (type === 'text' || type === 'stanley') {
           setMessages(prev => prev.map(m => m.id === id ? { ...m, is_favorite: !currentStatus } as any : m))
         } else {
           setVideos(prev => prev.map(v => v.id === id ? { ...v, is_favorite: !currentStatus } as any : v))
@@ -119,7 +120,7 @@ export default function AdminDashboard() {
   const allItems = [
     ...messages.map(m => ({
       ...m,
-      type: 'text' as const,
+      type: (m.type === 'stanley' ? 'stanley' : 'text') as 'text' | 'stanley',
       content: m.message,
       createdAt: (m as any).created_at, // Map from DB snake_case
       isFavorite: (m as any).is_favorite // Map from DB snake_case
@@ -136,7 +137,10 @@ export default function AdminDashboard() {
   const filteredItems = allItems.filter(item => {
     if (filter === 'all') return true
     if (filter === 'favorites') return item.isFavorite
-    return item.type === filter
+    if (filter === 'text') return item.type === 'text'
+    if (filter === 'stanley') return item.type === 'stanley'
+    if (filter === 'video') return item.type === 'video'
+    return true
   })
 
   if (loading) return (
@@ -204,6 +208,7 @@ export default function AdminDashboard() {
                 { id: 'all', label: 'All Messages' },
                 { id: 'text', label: 'Text' },
                 { id: 'video', label: 'Video' },
+                { id: 'stanley', label: "Stanley's Thoughts", icon: MessageCircle },
                 { id: 'favorites', label: 'Favorites', icon: Heart }
               ].map((tab) => (
                 <button
@@ -266,13 +271,23 @@ export default function AdminDashboard() {
                       </div>
                     </>
                   ) : (
-                    <div className="w-full h-full p-8 flex items-center justify-center bg-gradient-to-br from-orange-50 to-rose-50">
+                    <div className={clsx(
+                      "w-full h-full p-8 flex items-center justify-center",
+                      item.type === 'stanley' 
+                        ? "bg-gradient-to-br from-blue-50 to-indigo-50" 
+                        : "bg-gradient-to-br from-orange-50 to-rose-50"
+                    )}>
                       <p className="text-dune/80 text-center font-medium line-clamp-4 italic">
                         "{item.content}"
                       </p>
-                      <div className="absolute bottom-4 left-4 flex items-center gap-2 text-dune/80 text-xs font-bold px-3 py-1.5 bg-white/60 backdrop-blur-md rounded-full">
-                        <FileText size={14} />
-                        Text Message
+                      <div className={clsx(
+                        "absolute bottom-4 left-4 flex items-center gap-2 text-xs font-bold px-3 py-1.5 backdrop-blur-md rounded-full",
+                        item.type === 'stanley' 
+                          ? "bg-indigo-100/60 text-indigo-900" 
+                          : "bg-white/60 text-dune/80"
+                      )}>
+                        {item.type === 'stanley' ? <MessageCircle size={14} /> : <FileText size={14} />}
+                        {item.type === 'stanley' ? "Stanley's Thoughts" : "Text Message"}
                       </div>
                     </div>
                   )}
@@ -295,7 +310,7 @@ export default function AdminDashboard() {
 
                 <div className="p-6">
                   <h3 className="font-bold text-lg text-dune mb-1">
-                    {item.type === 'video' ? 'Video' : 'Message'} from {item.name}
+                    {item.type === 'video' ? 'Video' : item.type === 'stanley' ? "Stanley's Thoughts" : 'Message'} from {item.name}
                   </h3>
                   <p className="text-sm text-dune/40 font-medium">
                     {new Date(item.createdAt).toLocaleDateString('en-US', {

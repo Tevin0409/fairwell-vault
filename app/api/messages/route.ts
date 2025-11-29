@@ -4,7 +4,7 @@ import { supabaseAdmin } from '@/lib/supabaseAdmin'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { name, message } = body
+    const { name, message, type = 'personal' } = body
 
     if (!name || !message) {
       return NextResponse.json({ error: 'Name and Message are required' }, { status: 400 })
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabaseAdmin
       .from('messages')
-      .insert([{ name, message }])
+      .insert([{ name, message, type }])
       .select()
 
     if (error) throw error

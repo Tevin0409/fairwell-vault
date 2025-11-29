@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { X, Heart, Video, FileText } from 'lucide-react'
+import { X, Heart, Video, FileText, MessageCircle } from 'lucide-react'
 import clsx from 'clsx'
 
 interface ModalProps {
@@ -10,7 +10,7 @@ interface ModalProps {
   item: {
     id: string
     name: string
-    type: 'text' | 'video'
+    type: 'text' | 'video' | 'stanley'
     content: string // message text or video url
     createdAt: string
     isFavorite: boolean
@@ -22,7 +22,7 @@ export default function MessageModal({ isOpen, onClose, item }: ModalProps) {
   const [isTyping, setIsTyping] = useState(false)
 
   useEffect(() => {
-    if (isOpen && item?.type === 'text') {
+    if (isOpen && (item?.type === 'text' || item?.type === 'stanley')) {
       setDisplayedText('')
       setIsTyping(true)
       let i = 1
@@ -56,9 +56,9 @@ export default function MessageModal({ isOpen, onClose, item }: ModalProps) {
           <div className="flex items-center gap-3">
             <div className={clsx(
               "w-10 h-10 rounded-full flex items-center justify-center",
-              item.type === 'video' ? "bg-orange-100 text-light-coral" : "bg-blue-50 text-blue-500"
+              item.type === 'video' ? "bg-orange-100 text-light-coral" : item.type === 'stanley' ? "bg-indigo-100 text-indigo-500" : "bg-blue-50 text-blue-500"
             )}>
-              {item.type === 'video' ? <Video size={20} /> : <FileText size={20} />}
+              {item.type === 'video' ? <Video size={20} /> : item.type === 'stanley' ? <MessageCircle size={20} /> : <FileText size={20} />}
             </div>
             <div>
               <h3 className="font-bold text-dune text-lg">{item.name}</h3>

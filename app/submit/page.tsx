@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Heart, PenLine, Video, Send, Upload } from 'lucide-react'
+import { Heart, PenLine, Video, Send, Upload, MessageCircle } from 'lucide-react'
 import clsx from 'clsx'
 import Link from 'next/link'
 
 export default function SubmitPage() {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<'text' | 'video'>('text')
+  const [activeTab, setActiveTab] = useState<'text' | 'video' | 'stanley'>('text')
   const [checking, setChecking] = useState(true)
 
   // Form States
@@ -19,8 +19,11 @@ export default function SubmitPage() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    const submitted = localStorage.getItem('submitted')
-    if (submitted === 'true') {
+    const submittedPersonal = localStorage.getItem('submitted_personal')
+    const submittedStanley = localStorage.getItem('submitted_stanley')
+    
+    // If both are submitted, redirect
+    if (submittedPersonal === 'true' && submittedStanley === 'true') {
       router.replace('/submitted')
     } else {
       setChecking(false)
@@ -35,11 +38,15 @@ export default function SubmitPage() {
       const res = await fetch('/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, message }),
+        body: JSON.stringify({ name, message, type: activeTab === 'stanley' ? 'stanley' : 'personal' }),
       })
 
       if (res.ok) {
-        localStorage.setItem('submitted', 'true')
+        if (activeTab === 'stanley') {
+          localStorage.setItem('submitted_stanley', 'true')
+        } else {
+          localStorage.setItem('submitted_personal', 'true')
+        }
         router.push('/thanks')
       } else {
         alert('Something went wrong. Please try again.')
@@ -77,7 +84,7 @@ export default function SubmitPage() {
       setProgress(100)
 
       if (res.ok) {
-        localStorage.setItem('submitted', 'true')
+        localStorage.setItem('submitted_personal', 'true')
         router.push('/thanks')
       } else {
         const data = await res.json()
@@ -125,7 +132,7 @@ export default function SubmitPage() {
         </div>
 
         {/* Tabs */}
-        <div className="grid grid-cols-2 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <button
             onClick={() => setActiveTab('text')}
             className={clsx(
@@ -163,15 +170,34 @@ export default function SubmitPage() {
             <span className="font-bold text-lg">Record a Video</span>
             <span className="text-sm opacity-70 mt-1">Share a moment on camera.</span>
           </button>
+
+          <button
+            onClick={() => setActiveTab('stanley')}
+            className={clsx(
+              'flex flex-col items-center justify-center p-8 rounded-3xl border-2 transition-all duration-300',
+              activeTab === 'stanley'
+                ? 'border-light-coral bg-orange-50/50 text-dune shadow-lg scale-105'
+                : 'border-white bg-white text-dune/60 hover:border-light-coral/30 hover:bg-white/80'
+            )}
+          >
+            <div className={clsx(
+              "w-14 h-14 rounded-full flex items-center justify-center mb-4 transition-colors",
+              activeTab === 'stanley' ? "bg-light-coral text-white" : "bg-orange-100 text-light-coral"
+            )}>
+              <MessageCircle size={24} />
+            </div>
+            <span className="font-bold text-lg">Stanley's Thoughts</span>
+            <span className="text-sm opacity-70 mt-1">What would he say?</span>
+          </button>
         </div>
 
         {/* Form Area */}
         <div className="bg-white rounded-3xl border border-white shadow-xl shadow-dune/5 p-8 md:p-12">
-          {activeTab === 'text' ? (
+          {activeTab === 'text' || activeTab === 'stanley' ? (
             <form onSubmit={handleTextSubmit} className="space-y-8">
               <div className="space-y-3">
                 <label className="block text-base font-bold text-dune">
-                  Your heartfelt message
+                  {activeTab === 'stanley' ? "What would Stanley say?" : "Your heartfelt message"}
                 </label>
                 <textarea
                   required
@@ -180,7 +206,7 @@ export default function SubmitPage() {
                   onChange={(e) => setMessage(e.target.value)}
                   rows={6}
                   className="w-full rounded-2xl border-gray-200 bg-concrete/30 p-6 text-dune placeholder:text-dune/30 focus:border-light-coral focus:ring-light-coral transition-all resize-none text-lg"
-                  placeholder="Share a memory, a wish, or a funny story..."
+                  placeholder={activeTab === 'stanley' ? "Share what you think Stanley would have told Njambi..." : "Share a memory, a wish, or a funny story..."}
                 />
               </div>
 
