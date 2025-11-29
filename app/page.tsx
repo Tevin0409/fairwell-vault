@@ -1,10 +1,32 @@
+'use client'
+
 import Link from 'next/link'
 import { Heart, MessageSquare, Video, Stars } from 'lucide-react'
 import Countdown from '@/components/Countdown'
 import Image from 'next/image'
 import FloatingPetals from '@/components/FloatingPetals'
+import { useState } from 'react'
+import ImageModal from '@/components/ImageModal'
+
+const GALLERY_IMAGES = [5, 6, 7, 8, 9].map(i => `/gallery-${i}.jpeg`)
 
 export default function LandingPage() {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+
+  const handleNext = () => {
+    if (!selectedImage) return
+    const currentIndex = GALLERY_IMAGES.indexOf(selectedImage)
+    const nextIndex = (currentIndex + 1) % GALLERY_IMAGES.length
+    setSelectedImage(GALLERY_IMAGES[nextIndex])
+  }
+
+  const handlePrev = () => {
+    if (!selectedImage) return
+    const currentIndex = GALLERY_IMAGES.indexOf(selectedImage)
+    const prevIndex = (currentIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length
+    setSelectedImage(GALLERY_IMAGES[prevIndex])
+  }
+
   return (
     <div className="min-h-screen bg-concrete text-dune font-sans selection:bg-light-coral selection:text-white">
       {/* Header */}
@@ -174,16 +196,20 @@ export default function LandingPage() {
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8">
-            {[5, 6, 7, 8, 9].map((i) => (
-              <div key={i} className={`relative aspect-[3/4] rounded-2xl overflow-hidden group ${i % 2 === 0 ? 'md:translate-y-12' : ''}`}>
+            {GALLERY_IMAGES.map((src, i) => (
+              <button
+                key={i}
+                onClick={() => setSelectedImage(src)}
+                className={`relative aspect-[3/4] rounded-2xl overflow-hidden group w-full text-left ${i % 2 === 0 ? 'md:translate-y-12' : ''}`}
+              >
                 <Image
-                  src={`/gallery-${i}.jpeg`}
+                  src={src}
                   alt={`Memory ${i}`}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -224,6 +250,14 @@ export default function LandingPage() {
          
         </div>
       </footer>
+
+      <ImageModal 
+        isOpen={!!selectedImage} 
+        onClose={() => setSelectedImage(null)} 
+        imageSrc={selectedImage}
+        onNext={handleNext}
+        onPrev={handlePrev}
+      />
     </div>
   )
 }
