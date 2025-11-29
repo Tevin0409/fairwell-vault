@@ -163,9 +163,6 @@ export default function AdminRegister() {
             </div>
 
             <div className="pt-4 space-y-6">
-              <p className="text-xs text-dune/50 leading-relaxed">
-                By creating an account, you agree to our <a href="#" className="text-light-coral hover:underline font-bold">Terms of Service</a> and <a href="#" className="text-light-coral hover:underline font-bold">Privacy Policy</a>.
-              </p>
               <button
                 type="submit"
                 disabled={loading}
