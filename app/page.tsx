@@ -257,6 +257,8 @@ export default function LandingPage() {
         imageSrc={selectedImage}
         onNext={handleNext}
         onPrev={handlePrev}
+        currentIndex={selectedImage ? GALLERY_IMAGES.indexOf(selectedImage) : 0}
+        totalImages={GALLERY_IMAGES.length}
       />
     </div>
   )
