@@ -35,7 +35,7 @@ export default function MessageModal({ isOpen, onClose, item }: ModalProps) {
           setIsTyping(false)
           clearInterval(interval)
         }
-      }, 30) // Typing speed
+      }, 60) // Typing speed
 
       return () => clearInterval(interval)
     }

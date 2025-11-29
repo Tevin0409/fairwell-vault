@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Heart, MessageSquare, Video, Stars } from 'lucide-react'
 import Countdown from '@/components/Countdown'
 import Image from 'next/image'
+import FloatingPetals from '@/components/FloatingPetals'
 
 export default function LandingPage() {
   return (
@@ -118,8 +119,47 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Message from Njambi */}
+      <section className="py-32 px-6 bg-concrete/50 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-5 mix-blend-overlay" />
+        <div className="max-w-4xl mx-auto relative z-10">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-light-coral/10 mb-6">
+              <Heart className="w-8 h-8 text-light-coral" fill="currentColor" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">To My Beautiful Friends</h2>
+          </div>
+          
+          <div className="prose prose-lg md:prose-xl mx-auto text-dune/80 text-center leading-relaxed font-light space-y-8">
+            <p>
+              Before I get swept up in this new adventure, I need to shout from the rooftops how much I love you all. 
+              I feel so blessed to have each of you in my life. Some of you have been there since childhood, 
+              some since my teen years, and some came into my life later and every single one of you became an 
+              important part of my existence. Thank you for loving me, supporting me, laughing with me, and 
+              sharing your lives with me, It’s an honor I’ll always treasure.
+            </p>
+            
+            <p>
+              Soon, distance will try to separate us, but you all live in my heart and head rent-free… 
+              though I might start charging soon because, heeh, life is expensive 😂😂. No matter the miles, 
+              I pray we stay connected, always showing up for each other in every season, every vibe, 
+              every challenge, and every celebration.
+            </p>
+            
+            <p>
+              I’m beyond excited to start this new chapter, and I feel so lucky knowing that you’re cheering me on. 
+              Mnitumie za shawarma please🤭❤️😂
+            </p>
+            
+            <p className="font-medium text-dune pt-4">
+              Here’s to love, laughter, and friendships that survive distance ❤️✨
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Gallery Section */}
-      <section className="py-32 px-6 bg-dune text-white overflow-hidden">
+      <section className="py-32 px-6 bg-dune text-white">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-8">
             <div>
@@ -133,11 +173,11 @@ export default function LandingPage() {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-            {[1, 2, 3, 4].map((i) => (
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8">
+            {[5, 6, 7, 8, 9].map((i) => (
               <div key={i} className={`relative aspect-[3/4] rounded-2xl overflow-hidden group ${i % 2 === 0 ? 'md:translate-y-12' : ''}`}>
                 <Image
-                  src={`/gallery-${i}.jpg`}
+                  src={`/gallery-${i}.jpeg`}
                   alt={`Memory ${i}`}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -152,6 +192,7 @@ export default function LandingPage() {
       {/* Countdown Section */}
       <section className="py-32 px-6 bg-light-coral relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay" />
+        <FloatingPetals />
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
           <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-white/10 rounded-full blur-3xl animate-float" />
           <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-rose-600/20 rounded-full blur-3xl animate-float-delayed" />
