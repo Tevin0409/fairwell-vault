@@ -32,6 +32,7 @@ export default function AdminDashboard() {
   const [videos, setVideos] = useState<VideoSubmission[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<'all' | 'text' | 'video' | 'stanley' | 'favorites'>('all')
+  const [searchQuery, setSearchQuery] = useState('')
   
   // Modal State
   const [selectedItem, setSelectedItem] = useState<{
@@ -135,6 +136,14 @@ export default function AdminDashboard() {
   ].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
   const filteredItems = allItems.filter(item => {
+    // Search Filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase()
+      const matchesName = item.name.toLowerCase().includes(query)
+      const matchesContent = item.content.toLowerCase().includes(query)
+      if (!matchesName && !matchesContent) return false
+    }
+
     if (filter === 'all') return true
     if (filter === 'favorites') return item.isFavorite
     if (filter === 'text') return item.type === 'text'
@@ -232,6 +241,8 @@ export default function AdminDashboard() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-dune/30 w-4 h-4" />
                 <input 
                   type="text" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search messages..." 
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-concrete border-transparent focus:bg-white focus:border-light-coral focus:ring-2 focus:ring-light-coral/20 transition-all text-sm font-medium placeholder:text-dune/30"
                 />

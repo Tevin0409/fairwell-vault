@@ -20,13 +20,13 @@
            <motion.div
              className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
              initial={{ opacity: 1 }}
-             exit={{ opacity: 0, transition: { duration: 0.5, delay: 1 } }}
+             exit={{ opacity: 0, transition: { duration: 1.0, delay: 2 } }}
            >
              {/* Left Door */}
              <motion.div
                className="absolute left-0 top-0 bottom-0 w-1/2 bg-dune border-r-4 border-light-coral/20 flex items-center justify-end pr-8 shadow-2xl z-20"
                initial={{ x: 0 }}
-               exit={{ x: '-100%', transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] } }}
+               exit={{ x: '-100%', transition: { duration: 3.0, ease: [0.22, 1, 0.36, 1] } }}
              >
                <div className="w-32 h-32 rounded-full border-4 border-dashed border-light-coral/20 animate-[spin_10s_linear_infinite]" />
              </motion.div>
@@ -35,7 +35,7 @@
              <motion.div
                className="absolute right-0 top-0 bottom-0 w-1/2 bg-dune border-l-4 border-light-coral/20 flex items-center justify-start pl-8 shadow-2xl z-20"
                initial={{ x: 0 }}
-               exit={{ x: '100%', transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] } }}
+               exit={{ x: '100%', transition: { duration: 3.0, ease: [0.22, 1, 0.36, 1] } }}
              >
                <div className="w-32 h-32 rounded-full border-4 border-dashed border-light-coral/20 animate-[spin_10s_linear_infinite_reverse]" />
              </motion.div>
@@ -48,7 +48,7 @@
                  scale: 0, 
                  rotate: 180, 
                  opacity: 0,
-                 transition: { duration: 0.5 } 
+                 transition: { duration: 1.0 } 
                }}
              >
                <Lock className="w-12 h-12 text-light-coral" />
@@ -61,7 +61,7 @@
                exit={{ 
                  opacity: [0, 1, 0],
                  scale: [1, 1.2, 1.5],
-                 transition: { duration: 1 } 
+                 transition: { duration: 2.0 } 
                }}
              />
            </motion.div>
