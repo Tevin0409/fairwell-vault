@@ -33,6 +33,7 @@ export default function AdminRegister() {
           data: {
             full_name: fullName,
           },
+          emailRedirectTo: `${window.location.origin}/admin/login`,
         },
       })
 
